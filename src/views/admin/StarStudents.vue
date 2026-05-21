@@ -1,0 +1,1 @@
+<template><div class="placeholder"><h2>学习标兵</h2><p>学习标兵推荐功能页面</p></div></template><script setup></script><style scoped>.placeholder{padding:20px}.placeholder h2{margin:0 0 30px;font-size:24px}</style>

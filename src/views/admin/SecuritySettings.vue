@@ -1,0 +1,1 @@
+<template><div class="placeholder"><h2>安全设置</h2><p>安全设置功能页面</p></div></template><script setup></script><style scoped>.placeholder{padding:20px}.placeholder h2{margin:0 0 30px;font-size:24px}</style>

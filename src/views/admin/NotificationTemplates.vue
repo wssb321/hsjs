@@ -1,0 +1,1 @@
+<template><div class="placeholder"><h2>通知模板</h2><p>通知模板管理功能页面</p></div></template><script setup></script><style scoped>.placeholder{padding:20px}.placeholder h2{margin:0 0 30px;font-size:24px}</style>

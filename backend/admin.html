@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>赓续文脉学习平台 - 后台管理系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            color: #667eea;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 1rem;
+            margin-top: 5px;
+        }
+
+        .admin-panel {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .panel-header h2 {
+            color: #333;
+            font-size: 1.5rem;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-danger {
+            background: #ff4757;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #ff3344;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 12px 24px;
+            background: #f5f5f5;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .tab:hover:not(.active) {
+            background: #e0e0e0;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #333;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .data-table td {
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            color: #666;
+        }
+
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .action-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-right: 5px;
+            transition: all 0.3s;
+        }
+
+        .edit-btn {
+            background: #667eea;
+            color: white;
+        }
+
+        .delete-btn {
+            background: #ff4757;
+            color: white;
+        }
+
+        .action-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .empty-state .icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #667eea;
+            font-size: 1.2rem;
+        }
+
+        .api-status {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .api-item {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .api-item strong {
+            color: #333;
+        }
+
+        .refresh-btn {
+            background: #28a745;
+            color: white;
+            margin-left: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .data-table {
+                font-size: 0.9rem;
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎓 红色精神学习平台</h1>
+            <h1>后台管理系统</h1>
+            <p>欢迎使用红色精神学习平台后台管理界面</p>
+            <div class="api-status">
+                <div class="api-item">
+                    <strong>API状态:</strong> <span id="api-status">检查中...</span>
+                </div>
+                <div class="api-item">
+                    <strong>后端地址:</strong> http://localhost:3001
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-value" id="total-users">0</div>
+                <div class="stat-label">用户总数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📝</div>
+                <div class="stat-value" id="total-notes">0</div>
+                <div class="stat-label">笔记总数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">❤️</div>
+                <div class="stat-value" id="total-favorites">0</div>
+                <div class="stat-label">收藏总数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-value" id="total-progress">0</div>
+                <div class="stat-label">学习记录</div>
+            </div>
+        </div>
+
+        <div class="admin-panel">
+            <div class="panel-header">
+                <h2>📋 数据管理中心</h2>
+                <div>
+                    <button class="btn refresh-btn" onclick="loadAllData()">🔄 刷新数据</button>
+                </div>
+            </div>
+
+            <div class="tabs">
+                <button class="tab active" onclick="showTab('users')">👥 用户管理</button>
+                <button class="tab" onclick="showTab('notes')">📝 笔记管理</button>
+                <button class="tab" onclick="showTab('favorites')">❤️ 收藏管理</button>
+                <button class="tab" onclick="showTab('progress')">📊 学习进度</button>
+            </div>
+
+            <div id="tab-users" class="tab-content">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>用户名</th>
+                            <th>邮箱</th>
+                            <th>政治面貌</th>
+                            <th>注册时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="users-tbody">
+                        <tr><td colspan="6" class="loading">加载中...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="tab-notes" class="tab-content" style="display:none;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>标题</th>
+                            <th>内容摘要</th>
+                            <th>标签</th>
+                            <th>创建时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="notes-tbody">
+                        <tr><td colspan="6" class="loading">加载中...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="tab-favorites" class="tab-content" style="display:none;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>标题</th>
+                            <th>描述</th>
+                            <th>分类</th>
+                            <th>创建时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="favorites-tbody">
+                        <tr><td colspan="6" class="loading">加载中...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="tab-progress" class="tab-content" style="display:none;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>用户名</th>
+                            <th>学习项数</th>
+                            <th>学习时长</th>
+                            <th>记录时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="progress-tbody">
+                        <tr><td colspan="6" class="loading">加载中...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:3001/api';
+
+        async function checkApiStatus() {
+            try {
+                const response = await fetch(`${API_BASE}/health`);
+                const data = await response.json();
+                document.getElementById('api-status').innerHTML = `<span style="color: #28a745;">✅ 运行正常</span>`;
+                return true;
+            } catch (error) {
+                document.getElementById('api-status').innerHTML = `<span style="color: #ff4757;">❌ 未连接</span>`;
+                return false;
+            }
+        }
+
+        async function loadStats() {
+            try {
+                const response = await fetch(`${API_BASE}/stats`);
+                const data = await response.json();
+                document.getElementById('total-users').textContent = data.totalUsers || 0;
+                document.getElementById('total-notes').textContent = data.totalNotes || 0;
+                document.getElementById('total-favorites').textContent = data.totalFavorites || 0;
+                document.getElementById('total-progress').textContent = data.totalProgress || 0;
+            } catch (error) {
+                console.error('加载统计数据失败:', error);
+            }
+        }
+
+        async function loadUsers() {
+            try {
+                const response = await fetch(`${API_BASE}/admin/users`);
+                const users = await response.json();
+                const tbody = document.getElementById('users-tbody');
+
+                if (users.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" class="empty-state"><div class="icon">👥</div><p>暂无用户数据</p></td></tr>';
+                } else {
+                    tbody.innerHTML = users.map(user => `
+                        <tr>
+                            <td>${user.id || '-'}</td>
+                            <td>${user.username || '-'}</td>
+                            <td>${user.email || '-'}</td>
+                            <td>${user.politicalStatus || '-'}</td>
+                            <td>${user.createdAt ? new Date(user.createdAt).toLocaleString() : '-'}</td>
+                            <td>
+                                <button class="action-btn delete-btn" onclick="deleteUser(${user.id})">🗑️ 删除</button>
+                            </td>
+                        </tr>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('加载用户数据失败:', error);
+                document.getElementById('users-tbody').innerHTML = '<tr><td colspan="6" class="empty-state">加载失败，请检查后端服务</td></tr>';
+            }
+        }
+
+        async function loadNotes() {
+            try {
+                const response = await fetch(`${API_BASE}/admin/notes`);
+                const notes = await response.json();
+                const tbody = document.getElementById('notes-tbody');
+
+                if (notes.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" class="empty-state"><div class="icon">📝</div><p>暂无笔记数据</p></td></tr>';
+                } else {
+                    tbody.innerHTML = notes.map(note => `
+                        <tr>
+                            <td>${note.id || '-'}</td>
+                            <td>${note.title || '-'}</td>
+                            <td>${(note.content || '').substring(0, 50)}...</td>
+                            <td>${(note.tags || []).join(', ') || '-'}</td>
+                            <td>${note.date || '-'}</td>
+                            <td>
+                                <button class="action-btn delete-btn" onclick="deleteNote(${note.id})">🗑️ 删除</button>
+                            </td>
+                        </tr>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('加载笔记数据失败:', error);
+                document.getElementById('notes-tbody').innerHTML = '<tr><td colspan="6" class="empty-state">加载失败，请检查后端服务</td></tr>';
+            }
+        }
+
+        async function loadFavorites() {
+            try {
+                const response = await fetch(`${API_BASE}/admin/favorites`);
+                const favorites = await response.json();
+                const tbody = document.getElementById('favorites-tbody');
+
+                if (favorites.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" class="empty-state"><div class="icon">❤️</div><p>暂无收藏数据</p></td></tr>';
+                } else {
+                    tbody.innerHTML = favorites.map(fav => `
+                        <tr>
+                            <td>${fav.id || '-'}</td>
+                            <td>${fav.title || '-'}</td>
+                            <td>${(fav.description || '').substring(0, 50)}...</td>
+                            <td>${fav.category || '-'}</td>
+                            <td>${fav.date || '-'}</td>
+                            <td>
+                                <button class="action-btn delete-btn" onclick="deleteFavorite(${fav.id})">🗑️ 删除</button>
+                            </td>
+                        </tr>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('加载收藏数据失败:', error);
+                document.getElementById('favorites-tbody').innerHTML = '<tr><td colspan="6" class="empty-state">加载失败，请检查后端服务</td></tr>';
+            }
+        }
+
+        async function loadProgress() {
+            try {
+                const response = await fetch(`${API_BASE}/admin/progress`);
+                const progress = await response.json();
+                const tbody = document.getElementById('progress-tbody');
+
+                if (progress.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" class="empty-state"><div class="icon">📊</div><p>暂无学习进度数据</p></td></tr>';
+                } else {
+                    tbody.innerHTML = progress.map(item => `
+                        <tr>
+                            <td>${item.id || '-'}</td>
+                            <td>${item.username || '-'}</td>
+                            <td>${item.learnedItems || 0}</td>
+                            <td>${item.learningMinutes || 0} 分钟</td>
+                            <td>${item.date || '-'}</td>
+                            <td>
+                                <button class="action-btn delete-btn" onclick="deleteProgress(${item.id})">🗑️ 删除</button>
+                            </td>
+                        </tr>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('加载学习进度数据失败:', error);
+                document.getElementById('progress-tbody').innerHTML = '<tr><td colspan="6" class="empty-state">加载失败，请检查后端服务</td></tr>';
+            }
+        }
+
+        async function deleteUser(id) {
+            if (!confirm('确定要删除这个用户吗？')) return;
+            try {
+                await fetch(`${API_BASE}/admin/users/${id}`, { method: 'DELETE' });
+                alert('用户删除成功');
+                loadUsers();
+                loadStats();
+            } catch (error) {
+                alert('删除失败');
+            }
+        }
+
+        async function deleteNote(id) {
+            if (!confirm('确定要删除这条笔记吗？')) return;
+            try {
+                await fetch(`${API_BASE}/admin/notes/${id}`, { method: 'DELETE' });
+                alert('笔记删除成功');
+                loadNotes();
+                loadStats();
+            } catch (error) {
+                alert('删除失败');
+            }
+        }
+
+        async function deleteFavorite(id) {
+            if (!confirm('确定要删除这条收藏吗？')) return;
+            try {
+                await fetch(`${API_BASE}/admin/favorites/${id}`, { method: 'DELETE' });
+                alert('收藏删除成功');
+                loadFavorites();
+                loadStats();
+            } catch (error) {
+                alert('删除失败');
+            }
+        }
+
+        async function deleteProgress(id) {
+            if (!confirm('确定要删除这条学习进度记录吗？')) return;
+            try {
+                await fetch(`${API_BASE}/admin/progress/${id}`, { method: 'DELETE' });
+                alert('学习进度删除成功');
+                loadProgress();
+                loadStats();
+            } catch (error) {
+                alert('删除失败');
+            }
+        }
+
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.style.display = 'none';
+            });
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            document.getElementById(`tab-${tabName}`).style.display = 'block';
+            event.target.classList.add('active');
+
+            switch(tabName) {
+                case 'users': loadUsers(); break;
+                case 'notes': loadNotes(); break;
+                case 'favorites': loadFavorites(); break;
+                case 'progress': loadProgress(); break;
+            }
+        }
+
+        function loadAllData() {
+            checkApiStatus();
+            loadStats();
+            loadUsers();
+        }
+
+        window.onload = function() {
+            loadAllData();
+        };
+    </script>
+</body>
+</html>

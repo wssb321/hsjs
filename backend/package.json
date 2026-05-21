@@ -1,0 +1,14 @@
+{
+  "name": "red-spirit-backend",
+  "version": "1.0.0",
+  "description": "红色精神学习平台后端管理系统",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  }
+}

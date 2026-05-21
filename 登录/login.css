@@ -1,0 +1,449 @@
+* {
+    /* 去除浏览器默认内外边距 */
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    /* 溢出隐藏 */
+    overflow-x: hidden;
+    display: flex;
+    position: relative;
+    background-color: #f5f5f5;
+}
+
+/* 视频背景 */
+.bg-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+
+span {
+    position: absolute;
+    z-index: 0;
+    bottom: 0;
+    border-radius: 50%;
+    /* 径向渐变 */
+    background: radial-gradient(circle at 72% 28%, #fff 3px, #ff7edf 8%, #5b5b5b, #aad7f9 100%);
+    /* 泡泡内阴影 */
+    box-shadow: inset 0 0 6px #fff,
+        inset 3px 0 6px #eaf5fc,
+        inset 2px -2px 10px #efcde6,
+        inset 0 0 60px #f9f6de,
+        0 0 20px #fff;
+    /* 动画 */
+    animation: myMove 4s linear infinite;
+}
+
+
+@keyframes myMove {
+    0% {
+        transform: translateY(0%);
+        opacity: 1;
+    }
+
+    50% {
+        transform: translate(10%, -1000%);
+    }
+
+    75% {
+        transform: translate(-20%, -1200%);
+    }
+
+    99% {
+        opacity: .9;
+    }
+
+    100% {
+        transform: translateY(-1800%) scale(1.5);
+        opacity: 0;
+    }
+}
+
+/* 最外层的大盒子 */
+.box {
+    width: 900px;
+    height: 550px;
+    display: flex;
+    /* 相对定位 */
+    position: relative;
+    z-index: 2;
+    margin: auto;
+    /* 设置圆角 */
+    border-radius: 15px;
+    /* 设置边框 */
+    border: 2px solid rgba(255, 255, 255, .6);
+    /* 设置盒子阴影 */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .2);
+    overflow: hidden;
+}
+
+/* 滑动的盒子 */
+.pre-box {
+    /* 宽度为大盒子的一半 */
+    width: 50%;
+    /* width: var(--width); */
+    height: 100%;
+    /* 绝对定位 */
+    position: absolute;
+    /* 距离大盒子左侧为0 */
+    left: 0;
+    /* 距离大盒子顶部为0 */
+    top: 0;
+    z-index: 99;
+    border-radius: 15px 0 0 15px;
+    background-color: #edd4dc;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, .15);
+    /* 动画过渡，先加速再减速 */
+    transition: 0.5s ease-in-out;
+}
+
+/* 滑动盒子的标题 */
+.pre-box h1 {
+    margin-top: 120px;
+    text-align: center;
+    /* 文字间距 */
+    letter-spacing: 8px;
+    color: #e74c3c;
+    /* 禁止选中 */
+    user-select: none;
+    /* 文字阴影 */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, .1);
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+/* 滑动盒子的文字 */
+.pre-box p {
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    margin: 10px 0;
+    /* 禁止选中 */
+    user-select: none;
+    font-weight: bold;
+    color: #333;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, .1);
+    font-size: 18px;
+}
+
+/* 图片盒子 */
+.img-box {
+    width: 180px;
+    height: 180px;
+    margin: 30px auto;
+    /* 设置为圆形 */
+    border-radius: 50%;
+    /* 设置用户禁止选中 */
+    user-select: none;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, .2);
+    border: 3px solid rgba(255, 255, 255, 0.8);
+    transition: all 0.3s ease;
+}
+
+/* 图片盒子悬停时 */
+.img-box:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .3);
+}
+
+/* 图片 */
+.img-box img {
+    width: 100%;
+    transition: 0.5s;
+}
+
+/* 登录和注册盒子 */
+.login-form,
+.register-form {
+    flex: 1;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+}
+
+/* 标题盒子 */
+.title-box {
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+/* 标题 */
+.title-box h1 {
+    text-align: center;
+    color: white;
+    /* 禁止选中 */
+    user-select: none;
+    letter-spacing: 8px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, .2);
+    font-size: 28px;
+    margin: 0;
+
+}
+
+/* 输入框盒子 */
+.input-box {
+    display: flex;
+    /* 纵向布局 */
+    flex-direction: column;
+    /* 水平居中 */
+    align-items: center;
+}
+
+/* 输入框 */
+input {
+    width: 60%;
+    height: 45px;
+    margin-bottom: 20px;
+    text-indent: 15px;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 120px;
+    /* 增加磨砂质感 */
+    backdrop-filter: blur(10px);
+    color: #fff;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+input:focus {
+    /* 光标颜色 */
+    color: #fff;
+    border-color: #e74c3c;
+    box-shadow: 0 0 15px rgba(231, 76, 60, 0.5);
+    transform: translateY(-2px);
+}
+
+/* 聚焦时隐藏文字 */
+input:focus::placeholder {
+    opacity: 0;
+}
+
+input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+    transition: opacity 0.3s ease;
+}
+
+/* 按钮盒子 */
+.btn-box {
+    display: flex;
+    justify-content: center;
+}
+
+/* 按钮 */
+button {
+    width: 120px;
+    height: 40px;
+    margin: 0 7px;
+    line-height: 40px;
+    border: none;
+    border-radius: 20px;
+    background-color: #e74c3c;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* 按钮悬停时 */
+button:hover {
+    /* 鼠标小手 */
+    cursor: pointer;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+    background-color: #c0392b;
+}
+
+/* 按钮点击时 */
+button:active {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(231, 76, 60, 0.4);
+}
+
+/* 按钮文字 */
+.btn-box p {
+    height: 40px;
+    line-height: 40px;
+    /* 禁止选中 */
+    user-select: none;
+    font-size: 14px;
+    color: white;
+    transition: all 0.3s ease;
+
+}
+/* 按钮文字 */
+.btn-box p:hover {
+    cursor: pointer;
+    border-bottom: 1px solid white;
+    transform: translateY(-2px);
+}
+
+/* 错误提示 */
+.error-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #e74c3c;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 5px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, .2);
+    z-index: 9999;
+    animation: slideIn 0.3s ease-out;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* 错误提示动画 */
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* 响应式设计 */
+@media screen and (max-width: 950px) {
+    .box {
+        width: 80%;
+        height: 500px;
+    }
+    
+    .pre-box h1 {
+        margin-top: 100px;
+        font-size: 24px;
+    }
+    
+    .img-box {
+        width: 150px;
+        height: 150px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .box {
+        width: 90%;
+        height: 450px;
+    }
+    
+    .pre-box h1 {
+        margin-top: 80px;
+        font-size: 20px;
+        letter-spacing: 5px;
+    }
+    
+    .pre-box p {
+        font-size: 16px;
+    }
+    
+    .img-box {
+        width: 120px;
+        height: 120px;
+        margin: 20px auto;
+    }
+    
+    .title-box h1 {
+        font-size: 24px;
+        letter-spacing: 5px;
+    }
+    
+    input {
+        width: 70%;
+        height: 40px;
+    }
+    
+    button {
+        width: 100px;
+        height: 35px;
+        line-height: 35px;
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .box {
+        width: 95%;
+        height: 400px;
+        flex-direction: column;
+    }
+    
+    .pre-box {
+        width: 100%;
+        height: 50%;
+        border-radius: 15px 15px 0 0;
+    }
+    
+    .pre-box h1 {
+        margin-top: 40px;
+        font-size: 18px;
+    }
+    
+    .img-box {
+        width: 100px;
+        height: 100px;
+        margin: 10px auto;
+    }
+    
+    .login-form,
+    .register-form {
+        width: 100%;
+        height: 50%;
+    }
+    
+    .title-box {
+        height: 100px;
+    }
+    
+    .title-box h1 {
+        font-size: 20px;
+    }
+    
+    input {
+        width: 80%;
+        height: 35px;
+        margin-bottom: 15px;
+    }
+    
+    button {
+        width: 90px;
+        height: 30px;
+        line-height: 30px;
+    }
+    
+    .btn-box p {
+        height: 30px;
+        line-height: 30px;
+        font-size: 12px;
+    }
+    
+    /* 调整滑动效果 */
+    .pre-box {
+        transform: translateY(0%);
+    }
+    
+    .pre-box.active {
+        transform: translateY(-100%);
+    }
+}
